@@ -67,6 +67,5 @@ dependencies {
     testCompile("junit:junit")
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '5.0'
-}
+mainClassName = 'org.magnum.mobilecloud.video.Application'
+
