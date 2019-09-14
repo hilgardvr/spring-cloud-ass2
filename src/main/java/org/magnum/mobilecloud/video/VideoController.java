@@ -18,13 +18,19 @@
 
 package org.magnum.mobilecloud.video;
 
+import org.magnum.mobilecloud.video.repository.Video;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class AnEmptyController {
+public class VideoController {
 	
 	/**
 	 * You will need to create one or more Spring controllers to fulfill the
@@ -47,5 +53,30 @@ public class AnEmptyController {
 	public @ResponseBody String goodLuck(){
 		return "Good Luck!";
 	}
-	
+
+    @RequestMapping(value = "/video", method = RequestMethod.POST)
+    public @ResponseBody Video postVideoMetadata(
+            @RequestBody Video vid
+    ) {
+        //vid.setId(videoId);
+        //videoId++;
+        //vid.setDataUrl(getDataUrl(vid.getId()));
+        //videoList.add(vid);
+        return vid;
+    }
+
+    private String getDataUrl(long videoId){
+        String url = getUrlBaseForLocalServer() + "/video/" + videoId + "/data";
+        return url;
+    }
+
+    private String getUrlBaseForLocalServer() {
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String base =
+                "http://"+request.getServerName()
+                        + ((request.getServerPort() != 80) ? ":"+request.getServerPort() : "");
+        return base;
+    }
+
 }
