@@ -1,0 +1,12 @@
+My lessons learned on assignment 2
+Anil PhilipWeek 4 · a day ago · Edited
+I am posting this in case it helps someone on Assignment 2
+
+Again, Use Netbeans and JDK. I tried Eclipse and it did not work. See https://www.coursera.org/learn/cloud-services-java-spring-framework/discussions/weeks/4/threads/IyzTytWeEemKlBI5VhN_cg
+It is not necessary to use Spring Data Rest.
+Focus on week 4 lectures (videos 1, 2, 3, 5)
+If you need to return an error (404 etc) then you do response.sendError(...) but you also need to `return null` for the response body
+It is confusing to see Oauth2 mentioned. It is not required at all for the assignment except in the instruction for Application.java
+JPA on queries https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
+Repository methods are required for findBy queries https://www.coursera.org/learn/cloud-services-java-spring-framework/discussions/weeks/4/threads/BE70MtMjEemWCApMdRfP4g/replies/PKQajdYxEem1Cwr-b0c5XA
+Bug in Autograder see https://www.coursera.org/learn/cloud-services-java-spring-framework/discussions/weeks/4/threads/-KyaStWXEem7XwoK5oxU8g

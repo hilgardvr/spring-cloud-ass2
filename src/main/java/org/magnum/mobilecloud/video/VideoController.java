@@ -19,6 +19,8 @@
 package org.magnum.mobilecloud.video;
 
 import org.magnum.mobilecloud.video.repository.Video;
+import org.magnum.mobilecloud.video.repository.VideoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class VideoController {
-	
+
+    @Autowired
+    private VideoRepository videos;
 	/**
 	 * You will need to create one or more Spring controllers to fulfill the
 	 * requirements of the assignment. If you use this file, please rename it
@@ -62,6 +66,8 @@ public class VideoController {
         //videoId++;
         //vid.setDataUrl(getDataUrl(vid.getId()));
         //videoList.add(vid);
+        videos.save(vid);
+        System.out.println(vid.getName());
         return vid;
     }
 
