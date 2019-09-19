@@ -30,6 +30,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class VideoController {
@@ -62,13 +63,14 @@ public class VideoController {
     public @ResponseBody Video postVideoMetadata(
             @RequestBody Video vid
     ) {
-        //vid.setId(videoId);
-        //videoId++;
-        //vid.setDataUrl(getDataUrl(vid.getId()));
-        //videoList.add(vid);
         videos.save(vid);
         System.out.println(vid.getName());
         return vid;
+    }
+
+    @RequestMapping(value = "/video", method = RequestMethod.GET)
+    public @ResponseBody List<Video> getVideoMetadata() {
+        return videos.findAll();
     }
 
     private String getDataUrl(long videoId){
