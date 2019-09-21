@@ -22,10 +22,7 @@ import org.magnum.mobilecloud.video.repository.Video;
 import org.magnum.mobilecloud.video.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -64,13 +61,22 @@ public class VideoController {
             @RequestBody Video vid
     ) {
         videos.save(vid);
-        System.out.println(vid.getName());
         return vid;
     }
 
     @RequestMapping(value = "/video", method = RequestMethod.GET)
     public @ResponseBody List<Video> getVideoMetadata() {
         return videos.findAll();
+    }
+
+    @RequestMapping(value = "/video/search/findByName", method = RequestMethod.GET)
+    public @ResponseBody List<Video> findByName(@RequestParam("title") String title) {
+	    return videos.findByName(title);
+    }
+
+    @RequestMapping(value = "/video/search/findByDurationLessThan", method = RequestMethod.GET)
+    public @ResponseBody List<Video> findByDurationLessThan(@RequestParam("duration") long duration) {
+        return videos.findByDurationLessThan(duration);
     }
 
     private String getDataUrl(long videoId){
