@@ -56,6 +56,13 @@ public class VideoController {
 		return "Good Luck!";
 	}
 
+	@RequestMapping(value = "/video/{id}", method = RequestMethod.GET)
+    public @ResponseBody Video getVideoById(
+            @PathVariable long id
+    ) {
+	    return videos.findById(id);
+    }
+
     @RequestMapping(value = "/video", method = RequestMethod.POST)
     public @ResponseBody Video postVideoMetadata(
             @RequestBody Video vid
@@ -66,7 +73,7 @@ public class VideoController {
 
     @RequestMapping(value = "/video", method = RequestMethod.GET)
     public @ResponseBody List<Video> getVideoMetadata() {
-        return videos.findAll();
+	    return videos.findAll();
     }
 
     @RequestMapping(value = "/video/search/findByName", method = RequestMethod.GET)
@@ -92,6 +99,7 @@ public class VideoController {
 	            Set<String> likedBy = vid.getLikedBy();
 	            likedBy.add(principal.getName());
 	            vid.setLikedBy(likedBy);
+	            videos.save(vid);
                 response.setStatus(200);
             } else {
 	            response.setStatus(400);
@@ -114,6 +122,7 @@ public class VideoController {
 	            Set<String> likedBy = vid.getLikedBy();
 	            likedBy.remove(principal.getName());
 	            vid.setLikedBy(likedBy);
+	            videos.save(vid);
 	            response.setStatus(200);
             } else {
 	            response.setStatus(400);
