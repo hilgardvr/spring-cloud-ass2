@@ -30,7 +30,7 @@ public class Video {
 	private String name;
 	private String url;
 	private long duration;
-	private long likes = 0;
+	private long likes;
 	
 	@ElementCollection
 	private Set<String> likedBy = new HashSet<String>();

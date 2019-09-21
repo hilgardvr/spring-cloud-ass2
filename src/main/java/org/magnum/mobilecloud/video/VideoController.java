@@ -23,11 +23,11 @@ import org.magnum.mobilecloud.video.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class VideoController {
@@ -79,18 +79,47 @@ public class VideoController {
         return videos.findByDurationLessThan(duration);
     }
 
-    private String getDataUrl(long videoId){
-        String url = getUrlBaseForLocalServer() + "/video/" + videoId + "/data";
-        return url;
+    @RequestMapping(value = "/video/{id}/like", method = RequestMethod.POST)
+    public void likeVideo(
+            @PathVariable("id") long id,
+            HttpServletResponse response,
+            Principal principal
+    ) {
+	    Video vid = videos.findById(id);
+	    if (vid != null) {
+	        if (!vid.getLikedBy().contains(principal.getName())) {
+	            vid.setLikes(vid.getLikes() + 1);
+	            Set<String> likedBy = vid.getLikedBy();
+	            likedBy.add(principal.getName());
+	            vid.setLikedBy(likedBy);
+                response.setStatus(200);
+            } else {
+	            response.setStatus(400);
+            }
+        } else {
+            response.setStatus(404);
+        }
     }
 
-    private String getUrlBaseForLocalServer() {
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String base =
-                "http://"+request.getServerName()
-                        + ((request.getServerPort() != 80) ? ":"+request.getServerPort() : "");
-        return base;
+    @RequestMapping(value = "/video/{id}/unlike", method = RequestMethod.POST)
+    public void unlikeVideo(
+            @PathVariable("id") long id,
+            HttpServletResponse response,
+            Principal principal
+    ) {
+	    Video vid = videos.findById(id);
+	    if (vid != null) {
+	        if (vid.getLikedBy().contains(principal.getName())) {
+	            vid.setLikes(vid.getLikes() - 1);
+	            Set<String> likedBy = vid.getLikedBy();
+	            likedBy.remove(principal.getName());
+	            vid.setLikedBy(likedBy);
+	            response.setStatus(200);
+            } else {
+	            response.setStatus(400);
+            }
+        } else {
+	        response.setStatus(404);
+        }
     }
-
 }
